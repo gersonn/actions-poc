@@ -8,9 +8,12 @@ on:
       - main
 
 jobs:
-  format_code:
+  detect-changes:
     name: Format with prettier
     runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.changed-files.outputs.result }}
 
     steps:
       - uses: actions/checkout@v2
@@ -33,3 +36,13 @@ jobs:
 
       - name: Get result
         run: echo "${{steps.changed-files.outputs.result}}"
+
+  build:
+    needs: detect-changes
+    name: build application
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{fromJson(needs.detect-changes.outputs.matrix)}}
+
+    steps:
+      - run: echo ${{ matrix.generator }}
