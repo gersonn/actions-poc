@@ -30,16 +30,15 @@ jobs:
             .slice(0, -1)
             .map(line => line.split('/')[1])
             .filter((v, i, a) => a.indexOf(v) === i)
-            .map(v => ({ generator: v }))
 
-            return JSON.stringify(generators)
+            return JSON.stringify({ generator })
 
       - name: Get result
         run: echo "${{steps.changed-files.outputs.result}}"
 
   build:
-    needs: detect-changes
-    name: build application
+    needs: [detect-changes]
+    name: Build application
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{fromJson(needs.detect-changes.outputs.matrix)}}
