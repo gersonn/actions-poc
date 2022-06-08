@@ -1,3 +1,0 @@
-apps/app1/server.mjs
-apps/app1/env.mjs
-apps/app2/server.mjs
