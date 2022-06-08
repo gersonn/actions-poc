@@ -1,0 +1,8 @@
+name: Build Generator Docker Image
+
+on:
+  push:
+    paths:
+      - 'apps/**'
+    branches:
+      - main
