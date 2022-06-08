@@ -1,9 +1,9 @@
-name: Build Generator Docker Image
+name: Detect changes
 
 on:
   push:
-    paths:
-      - 'apps/**'
+    #paths:
+    #  - 'apps/**'
     branches:
       - main
 
