@@ -17,7 +17,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
       - run: git diff --name-only HEAD^ HEAD apps > changes.txt
+
       - uses: actions/github-script@v6
         id: changed-files
         with:
