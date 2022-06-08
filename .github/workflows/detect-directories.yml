@@ -6,3 +6,30 @@ on:
       - 'apps/**'
     branches:
       - main
+
+jobs:
+  format_code:
+    name: Format with prettier
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/github-script@v6
+        id: changed-files
+        with:
+          result-encoding: string
+          script: |
+            const fs = require('fs');
+
+            const allFileContents = fs.readFileSync('changes.txt', 'utf-8');
+            const generators = allFileContents
+            .split(/\r?\n/)
+            .slice(0, -1)
+            .map(line => line.split('/')[1])
+            .filter((v, i, a) => a.indexOf(v) === i)
+            .map(v => ({ generator: v }))
+
+            return JSON.stringify(generators)
+
+      - name: Get result
+        run: echo "${{steps.changed-files.outputs.result}}"
