@@ -2,9 +2,11 @@ name: Dispatch event
 
 on:
   pull_request:
+    branches:
+      - main
 
 jobs:
-  dispatch:
+  makedispatch:
     name: Dispatch event
     runs-on: ubuntu-latest
 
