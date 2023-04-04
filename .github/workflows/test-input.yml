@@ -13,7 +13,6 @@ jobs:
       - name: test
         run: |
           packages=${{ join(github.event.inputs.packages || github.event.client_payload.packages, ' ') }}
-          echo $packages
 
           for PKG in ${packages[@]}; do
             echo $PKG
