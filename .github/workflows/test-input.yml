@@ -15,7 +15,7 @@ jobs:
           NODE_OPTIONS: --max-old-space-size=2560
         run: |
 
-          packages=${{ github.event.inputs.packages || github.event.client_payload.packages }}
+          packages=${{ join(github.event.inputs.packages || github.event.client_payload.packages, ' ') }}
           echo $packages
 
           for PKG in ${packages[@]}; do
