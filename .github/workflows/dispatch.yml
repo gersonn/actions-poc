@@ -1,0 +1,25 @@
+name: Dispatch event
+
+on:
+  pull_request:
+
+jobs:
+  dispatch:
+    name: Dispatch event
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Find modified packages
+        id: changed_files
+        run: |
+          CHANGED=$(cat map.json | jq -r 'map(.name | split("/")[1]) | tostring')
+          echo $CHANGED
+          echo "changed_packages=$CHANGED" >> $GITHUB_OUTPUT
+
+      - name: trigger release workflow
+        uses: peter-evans/repository-dispatch@v2.1.1
+        with:
+          event-type: cut-release
+          token: ${{ secrets.BOT_TOKEN }}
+          client-payload: '{ "sha": "${{ github.sha }}", "packages": ${{ steps.changed_files.outputs.changed_packages }} }'

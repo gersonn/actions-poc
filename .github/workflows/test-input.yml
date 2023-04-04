@@ -1,0 +1,23 @@
+name: Cut a Release
+
+on:
+  repository_dispatch:
+    types: [cut-release]
+
+jobs:
+  dispatch:
+    name: Test event
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: test
+        env:
+          NODE_OPTIONS: --max-old-space-size=2560
+        run: |
+
+          packages=${{ github.event.inputs.packages || github.event.client_payload.packages }}
+          echo $packages
+
+          for PKG in ${packages[@]}; do
+            echo $PKG
+          done
