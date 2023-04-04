@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: test
         run: |
-          packages=${{ fromJSON(github.event.inputs.packages || github.event.client_payload.packages) }}
+          packages=(${{ join(github.event.inputs.packages || github.event.client_payload.packages, ' ') }})
           echo $packages
 
           for PKG in ${packages[@]}; do
