@@ -11,9 +11,8 @@ jobs:
 
     steps:
       - name: test
-        env:
-          NODE_OPTIONS: --max-old-space-size=2560
         run: |
+          echo Testing
 
           packages=${{ github.event.inputs.packages || github.event.client_payload.packages }}
           echo $packages
