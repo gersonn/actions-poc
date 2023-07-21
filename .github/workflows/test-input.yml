@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: test
         run: |
-          echo Testing
+          echo Testing.
 
           packages=${{ github.event.inputs.packages || github.event.client_payload.packages }}
           echo $packages
