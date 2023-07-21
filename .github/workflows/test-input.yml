@@ -13,10 +13,15 @@ jobs:
   dispatch:
     name: Test event
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.changed.outputs.changed_packages }}
 
     steps:
       - name: test
+        id: changed
         run: |
+          arrayTest=(${{ github.event.inputs.packages} || github.event.client_payload.packages }})
+          echo "changed_packages=$arrayTest" >> $GITHUB_OUTPUT
           packages=(${{ join(github.event.inputs.packages || github.event.client_payload.packages, ' ') }})
           echo $packages
 
@@ -30,6 +35,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(toJSON([github.event.inputs.packages])) || github.event.client_payload.packages }}
+        package: ${{ needs.dispatch.outputs.changed }}
     steps:
       - run: echo ${{ matrix.package }}
