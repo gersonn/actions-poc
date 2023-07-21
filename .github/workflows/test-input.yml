@@ -30,6 +30,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ [github.event.inputs.packages] || github.event.client_payload.packages }}
+        package: ${{ fromJson(github.event.inputs.packages) || github.event.client_payload.packages }}
     steps:
       - run: echo ${{ matrix.package }}
