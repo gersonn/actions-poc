@@ -21,7 +21,7 @@ jobs:
         id: changed
         run: |
           packages=(${{ join(github.event.inputs.packages || github.event.client_payload.packages, ' ') }})
-          echo "changed_packages=${{ toJSON(${packages}) }}" >> $GITHUB_OUTPUT
+          echo "changed_packages=[$(echo $packages | sed 's/ /, /g')]" >> $GITHUB_OUTPUT
           echo $packages
 
           for PKG in ${packages[@]}; do
