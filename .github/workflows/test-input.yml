@@ -20,9 +20,8 @@ jobs:
       - name: test
         id: changed
         run: |
-          arrayTest=(${{ github.event.inputs.packages} || github.event.client_payload.packages }})
-          echo "changed_packages=$arrayTest" >> $GITHUB_OUTPUT
           packages=(${{ join(github.event.inputs.packages || github.event.client_payload.packages, ' ') }})
+          echo "changed_packages=$arrayTest" >> $GITHUB_OUTPUT
           echo $packages
 
           for PKG in ${packages[@]}; do
