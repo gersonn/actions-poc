@@ -34,6 +34,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ github.event.client_payload.packages || (echo github.event.inputs.packages | jq --raw-input 'split(" ")') }}
+        package: ${{ github.event.client_payload.packages || fromJSON(format('[{0}]', github.event.inputs.packages)) }}
     steps:
       - run: echo ${{ matrix.package }}
