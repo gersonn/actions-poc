@@ -3,6 +3,11 @@ name: Cut a Release
 on:
   repository_dispatch:
     types: [cut-release]
+  workflow_dispatch:
+    inputs:
+      packages:
+        description: 'Emergencies only. Release a package from `main`. Enter the folder name under packages/. e.g. wsj'
+        required: true
 
 jobs:
   dispatch:
@@ -18,3 +23,13 @@ jobs:
           for PKG in ${packages[@]}; do
             echo $PKG
           done
+  github_release:
+    runs-on: ubuntu-latest
+    needs: [dispatch]
+
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ [github.event.inputs.packages] || github.event.client_payload.packages }}
+    steps:
+      - run: echo ${{ matrix.package }}
