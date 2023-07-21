@@ -13,8 +13,6 @@ jobs:
   dispatch:
     name: Test event
     runs-on: ubuntu-latest
-    outputs:
-      changed: ${{ steps.changed.outputs.changed_packages }}
 
     steps:
       - name: test
@@ -22,8 +20,6 @@ jobs:
         run: |
           echo ${{github.event.inputs.packages}}
           packages=(${{ join(github.event.inputs.packages || github.event.client_payload.packages, ' ') }})
-          echo "changed_packages=$packages" >> $GITHUB_OUTPUT
-          echo $packages
 
           for PKG in ${packages[@]}; do
             echo $PKG
@@ -35,6 +31,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ github.event.client_payload.packages || fromJSON(format('[{0}]', github.event.inputs.packages)) }}
+        package: ${{ github.event.client_payload.packages || fromJSON(format('[{0}]', toJSON(github.event.inputs.packages))) }}
     steps:
       - run: echo ${{ matrix.package }}
