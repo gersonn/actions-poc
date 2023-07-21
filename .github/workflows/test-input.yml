@@ -21,8 +21,7 @@ jobs:
         id: changed
         run: |
           packages=(${{ join(github.event.inputs.packages || github.event.client_payload.packages, ' ') }})
-          packagesOutput=${{toJSON($packages)}}
-          echo "changed_packages=$packagesOutput" >> $GITHUB_OUTPUT
+          echo "changed_packages=$(echo $packages | jq --raw-input 'split(" ")')" >> $GITHUB_OUTPUT
           echo $packages
 
           for PKG in ${packages[@]}; do
@@ -35,6 +34,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJSON(needs.dispatch.outputs.changed) }}
+        package: ${{ needs.dispatch.outputs.changed }}
     steps:
       - run: echo ${{ matrix.package }}
