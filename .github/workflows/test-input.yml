@@ -18,6 +18,7 @@ jobs:
       - name: test
         id: changed
         run: |
+          printenv
           echo ${{github.event.inputs.packages}}
           packages=(${{ join(github.event.inputs.packages || github.event.client_payload.packages, ' ') }})
 
